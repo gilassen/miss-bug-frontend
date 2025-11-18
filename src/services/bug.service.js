@@ -1,4 +1,7 @@
-const BASE_URL = 'http://localhost:3030/api/bug/'
+const BASE_URL =
+  process.env.NODE_ENV !== 'development'
+    ? '/api/bug/'
+    : '//localhost:3030/api/bug/'
 
 export const bugService = {
   query,
@@ -68,7 +71,7 @@ async function save(bug) {
 
 async function getCookieCount() {
   try {
-    const res = await fetch('/api/bug/count', { credentials: 'include' })
+    const res = await fetch(BASE_URL + 'count', { credentials: 'include' })
     if (!res.ok) throw new Error('Failed to get cookie count')
     const data = await res.json()
     return data
@@ -77,6 +80,7 @@ async function getCookieCount() {
     throw err
   }
 }
+
 
 async function getAll() {
   const res = await fetch(BASE_URL + 'all', {
